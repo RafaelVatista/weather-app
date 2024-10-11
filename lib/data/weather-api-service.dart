@@ -10,4 +10,6 @@ class WeatherApiService {
   Future<WeatherResponse> fetchWeather(int cityId) async {
     return await weatherDataSource.getWeatherDetails(cityId);
   }
+
+
 }

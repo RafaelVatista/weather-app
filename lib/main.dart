@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app_v2/ui/weather-screen.dart';
-import 'package:weather_app_v2/ui/weather-view-model.dart';
+import 'package:weather_app_v2/ui/weather-feature/weather-screen.dart';
+import 'package:weather_app_v2/ui/weather-feature/weather-view-model.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 233, 157, 71)),
+            seedColor: const Color.fromARGB(255, 33, 172, 242)),
         useMaterial3: true,
       ),
       home: const WeatherScreen(),
