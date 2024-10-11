@@ -233,50 +233,52 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 70,
+                        height: 20,
                       ),
                       Expanded(
-                        child: Column(
-                          children: [
-                            WeatherImageWidget(
-                                icon: weatherProvider.weatherIcon,
-                                gif: weatherProvider.weatherCondition),
-                            const SizedBox(height: 10),
-                            if (weatherProvider.weatherCondition != null)
-                              Text(
-                                weatherProvider.weatherCondition!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            if (weatherProvider.weatherDescription != null)
-                              Text(
-                                weatherProvider.weatherDescription!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        fontSize: 18,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              WeatherImageWidget(
+                                  icon: weatherProvider.weatherIcon,
+                                  gif: weatherProvider.weatherCondition),
+                              const SizedBox(height: 10),
+                              if (weatherProvider.weatherCondition != null)
+                                Text(
+                                  weatherProvider.weatherCondition!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
-                              ),
-                            const SizedBox(height: 20),
-                            if (weatherProvider.selectedTemp != null)
-                              Text(
-                                'Temperature: ${Utils.convertToTemperatureUnit(_unitSelected ?? TemperatureUnits.celsius, weatherProvider.selectedTemp ?? 0.0)} ${_unitSelected?.identificationSymbol}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                              ),
-                          ],
+                                      ),
+                                ),
+                              if (weatherProvider.weatherDescription != null)
+                                Text(
+                                  weatherProvider.weatherDescription!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
+                                ),
+                              const SizedBox(height: 20),
+                              if (weatherProvider.selectedTemp != null)
+                                Text(
+                                  'Temperature: ${Utils.convertToTemperatureUnit(_unitSelected ?? TemperatureUnits.celsius, weatherProvider.selectedTemp ?? 0.0)} ${_unitSelected?.identificationSymbol}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                            ],
+                          ),
                         ),
                       )
                     ],
