@@ -1,25 +1,35 @@
 import 'package:location/location.dart';
 
 class LocationService {
-  Location location = Location();
+  final Location _location = Location();
+  PermissionStatus? _permissionGranted;
 
-  Future<bool> requestPermission() async {
-    final permission = await location.requestPermission();
-    return permission == PermissionStatus.granted;
-  }
-
-  Future<LocationData> getCurrentLocation() async {
-    final serviceEnabled = await location.serviceEnabled();
+  Future<LocationData?> getCurrentLocation() async {
+    final serviceEnabled = await _location.serviceEnabled();
     if (!serviceEnabled) {
-      final result = await location.requestService;
-      if (result == true) {
-        print('Service has been enabled');
-      } else {
-        throw Exception('GPS service not enabled');
+      final result = await _location.requestService();
+      if (!result) {
+        return null;
       }
     }
 
-    final locationData = await location.getLocation();
+    if (await requestLocationPermission()) {
+      return null;
+    }
+
+    final locationData = await _location.getLocation();
     return locationData;
+  }
+
+  Future<bool> requestLocationPermission() async {
+    _permissionGranted = await _location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await _location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

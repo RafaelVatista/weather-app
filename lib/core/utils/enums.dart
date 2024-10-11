@@ -1,4 +1,5 @@
 enum Locations {
+  currentLocation('Current Location', 1),
   lisboa('Lisboa', 2267056),
   leiria('Leiria', 2267094),
   coimbra('Coimbra', 2740636),

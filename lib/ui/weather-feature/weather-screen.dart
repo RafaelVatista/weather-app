@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 import 'package:provider/provider.dart';
 import 'package:weather_app_v2/core/utils/enums.dart';
 import 'package:weather_app_v2/core/utils/utils.dart';
 import 'package:weather_app_v2/data/data_sources/weather/object/weather-model.dart';
+import 'package:weather_app_v2/data/location-service.dart';
 import 'package:weather_app_v2/ui/common/image-widget.dart';
 
 import 'package:weather_app_v2/ui/weather-feature/weather-view-model.dart';
@@ -19,14 +21,38 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late Future<void>? _weatherFuture;
 
   TemperatureUnits? _unitSelected = TemperatureUnits.celsius;
-  Locations? _locationSelected = Locations.leiria;
+  Locations? _locationSelected = Locations.lisboa;
+  final LocationService _locationService = LocationService();
 
   @override
   void initState() {
     super.initState();
+
+    if (_locationSelected == Locations.currentLocation) {
+      _weatherFuture = _fetchWeatherForCurrentLocation();
+    }
     final weatherProvider =
         Provider.of<WeatherViewModel>(context, listen: false);
-    _weatherFuture = weatherProvider.fetchWeather(Locations.leiria.locationId);
+    _weatherFuture =
+        weatherProvider.fetchWeather(_locationSelected!.locationId);
+  }
+
+  Future<void> _fetchWeatherForCurrentLocation() async {
+    try {
+      final locationData = await _locationService.getCurrentLocation();
+      if (locationData != null) {
+        final weatherProvider =
+            Provider.of<WeatherViewModel>(context, listen: false);
+        await weatherProvider.fetchWeatherByCurrentLocation(
+          latitude: locationData.latitude!,
+          longitude: locationData.longitude!,
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error getting location: $e')),
+      );
+    }
   }
 
   @override
@@ -180,7 +206,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         child: Column(
                           children: [
                             WeatherImageWidget(
-                                image: weatherProvider.weatherIcon),
+                                icon: weatherProvider.weatherIcon,
+                                gif: weatherProvider.weatherCondition),
                             const SizedBox(height: 10),
                             if (weatherProvider.weatherCondition != null)
                               Text(

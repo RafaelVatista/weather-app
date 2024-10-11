@@ -62,7 +62,7 @@ class ListOfWeather {
 }
 
 class Main {
-  double? temp;
+  num? temp;
   num? feelsLike;
   num? tempMin;
   num? tempMax;

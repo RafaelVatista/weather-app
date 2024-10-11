@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_v2/core/utils/utils.dart';
+import 'package:weather_app_v2/data/data_sources/weather/object/current_location_weather_response_model.dart';
 import 'package:weather_app_v2/data/data_sources/weather/object/weather-model.dart';
 import 'package:weather_app_v2/data/data_sources/weather/weather_repository.dart';
 
@@ -11,6 +11,10 @@ class WeatherViewModel extends ChangeNotifier {
 
   WeatherResponse? _weather;
   WeatherResponse? get weather => _weather;
+
+  CurrentLocationWeatherResponse? _currentLocationWeather;
+  CurrentLocationWeatherResponse? get currentLocationWeather =>
+      _currentLocationWeather;
 
   List<ListOfWeather>? _weatherData;
   List<ListOfWeather>? get weatherData => _weatherData;
@@ -38,16 +42,30 @@ class WeatherViewModel extends ChangeNotifier {
 
       if (_weatherData?.isNotEmpty ?? false) {
         _selectedDateTime = weatherData?.first.dt;
-        _selectedTemp = weatherData?.first.main?.temp;
+        _selectedTemp = weatherData?.first.main?.temp?.toDouble();
         _weatherCondition = weatherData?.first.weather?.first.main;
         _weatherDescription = weatherData?.first.weather?.first.description;
         _weatherIcon = weatherData?.first.weather?.first.icon;
+      }
+    } catch (e) {
+      throw (e.toString());
+    } finally {
+      notifyListeners();
+    }
+  }
 
-        var a = DateTime.fromMillisecondsSinceEpoch(
-                _weatherData!.first!.dt!.toInt() * 1000)
-            .formatDate();
+  Future<void> fetchWeatherByCurrentLocation(
+      {required double latitude, required double longitude}) async {
+    try {
+      _currentLocationWeather = await _weatherApiService
+          .fetchWeatherByLatAndLon(latitude: latitude, longitude: longitude);
 
-        print(a);
+      if (_currentLocationWeather != null) {
+        _selectedTemp = _currentLocationWeather?.main?.temp?.toDouble();
+        _weatherCondition = _currentLocationWeather?.weather?.first.main;
+        _weatherDescription =
+            _currentLocationWeather?.weather?.first.description;
+        _weatherIcon = _currentLocationWeather?.weather?.first.icon;
       }
     } catch (e) {
       throw (e.toString());
@@ -61,7 +79,7 @@ class WeatherViewModel extends ChangeNotifier {
     final selectedData = _weatherData?.firstWhere(
       (element) => element.dt == selectedDateTime,
     );
-    _selectedTemp = selectedData?.main?.temp;
+    _selectedTemp = selectedData?.main?.temp?.toDouble();
     _weatherCondition = selectedData?.weather?.first.main;
     _weatherDescription = selectedData?.weather?.first.description;
     _weatherIcon = selectedData?.weather?.first.icon;

@@ -74,6 +74,25 @@ class Utils {
         DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
     return date;
   }
+
+  static String testGif(String weatherCondition) {
+    switch (weatherCondition.toLowerCase()) {
+      case 'rain':
+        return "assets/lottie_gifs/rainy-animation.json";
+      case 'clear':
+        return "assets/lottie_gifs/sun-animation.json";
+      case 'clouds':
+        return "assets/lottie_gifs/cloudy-animation.json";
+      case 'thunderstorm':
+        return "assets/lottie_gifs/thunderstorm-animation.json";
+      case 'drizzle':
+        return "assets/lottie_gifs/drizzle-animation.json";
+      case 'snow':
+        return "assets/lottie_gifs/snow-animation.json";
+      default:
+        return "";
+    }
+  }
 }
 
 extension DateTimeExtension on DateTime {
