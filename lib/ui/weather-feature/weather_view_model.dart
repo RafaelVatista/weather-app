@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_v2/data/data_sources/weather/object/current_location_weather_response_model.dart';
-import 'package:weather_app_v2/data/data_sources/weather/object/weather-model.dart';
+import 'package:weather_app_v2/data/data_sources/weather/object/weather_model.dart';
 import 'package:weather_app_v2/data/data_sources/weather/weather_repository.dart';
 
-import 'package:weather_app_v2/data/weather-api-service.dart';
+import 'package:weather_app_v2/data/weather_api_service.dart';
 
 class WeatherViewModel extends ChangeNotifier {
   final WeatherApiService _weatherApiService =
@@ -57,10 +57,12 @@ class WeatherViewModel extends ChangeNotifier {
   Future<void> fetchWeatherByCurrentLocation(
       {required double latitude, required double longitude}) async {
     try {
+      _weatherData = null;
       _currentLocationWeather = await _weatherApiService
           .fetchWeatherByLatAndLon(latitude: latitude, longitude: longitude);
 
       if (_currentLocationWeather != null) {
+        _selectedDateTime = _currentLocationWeather?.dt;
         _selectedTemp = _currentLocationWeather?.main?.temp?.toDouble();
         _weatherCondition = _currentLocationWeather?.weather?.first.main;
         _weatherDescription =

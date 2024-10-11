@@ -1,5 +1,5 @@
 import 'package:weather_app_v2/data/data_sources/weather/object/current_location_weather_response_model.dart';
-import 'package:weather_app_v2/data/data_sources/weather/object/weather-model.dart';
+import 'package:weather_app_v2/data/data_sources/weather/object/weather_model.dart';
 import 'package:weather_app_v2/data/data_sources/weather/remote/weather_remote_data_source.dart';
 import 'package:weather_app_v2/data/data_sources/weather/weather_data_source.dart';
 

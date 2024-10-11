@@ -75,7 +75,7 @@ class Utils {
     return date;
   }
 
-  static String testGif(String weatherCondition) {
+  static String getAnimatedWeatherConditon(String weatherCondition) {
     switch (weatherCondition.toLowerCase()) {
       case 'rain':
         return "assets/lottie_gifs/rainy-animation.json";
@@ -92,6 +92,13 @@ class Utils {
       default:
         return "";
     }
+  }
+
+  static void showSnackBar(BuildContext context, String text, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(text, textAlign: TextAlign.center),
+      backgroundColor: color,
+    ));
   }
 }
 

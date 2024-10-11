@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app_v2/data/data_sources/weather/object/current_location_weather_response_model.dart';
-import 'package:weather_app_v2/data/data_sources/weather/object/weather-model.dart';
+import 'package:weather_app_v2/data/data_sources/weather/object/weather_model.dart';
 import 'package:weather_app_v2/data/data_sources/weather/weather_data_source.dart';
 import 'package:http/http.dart' as http;
 

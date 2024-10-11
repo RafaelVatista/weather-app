@@ -36,21 +36,29 @@ class _WeatherImageWidgetState extends State<WeatherImageWidget> {
   }
 
   void _loadGif() {
-    if (widget.gif != null || widget.gif != "") {
+    if (widget.gif != null) {
       _composition = AssetLottie(
-        Utils.testGif(widget.gif!),
+        Utils.getAnimatedWeatherConditon(widget.gif!),
       ).load();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget widgetToReturn = Center(
+      child: Icon(
+        Icons.error_outline,
+        color: Theme.of(context).colorScheme.error,
+        size: 30,
+      ),
+    );
+
     if (widget.icon == null || widget.gif == null) {
-      return const SizedBox();
+      return widgetToReturn;
     }
 
     if (widget.gif != null || widget.gif != "") {
-      return FutureBuilder<LottieComposition>(
+      widgetToReturn = FutureBuilder<LottieComposition>(
         future: _composition,
         builder: (context, snapshot) {
           var composition = snapshot.data;
@@ -62,34 +70,22 @@ class _WeatherImageWidgetState extends State<WeatherImageWidget> {
               fit: BoxFit.fill,
             );
           } else if (snapshot.hasError) {
-            return const Center(
-              child: Text("Error getting data"),
+            return Image.network(
+              'https://openweathermap.org/img/wn/${widget.icon}@2x.png',
+              width: 150,
+              height: 150,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.error_outline,
+                    color: Theme.of(context).colorScheme.error);
+              },
             );
           } else {
             return const Center(child: CircularProgressIndicator());
           }
         },
       );
-      // return Lottie.asset(
-      //   Utils.testGif(widget.gif!),
-      //   width: 200,
-      //   height: 200,
-      //   fit: BoxFit.fill,
-      //   errorBuilder: (context, error, stackTrace) {
-      //     return Icon(Icons.error_outline,
-      //         color: Theme.of(context).colorScheme.error);
-      //   },
-      // );
     }
 
-    return Image.network(
-      'https://openweathermap.org/img/wn/${widget.icon}@2x.png',
-      width: 150,
-      height: 150,
-      errorBuilder: (context, error, stackTrace) {
-        return Icon(Icons.error_outline,
-            color: Theme.of(context).colorScheme.error);
-      },
-    );
+    return widgetToReturn;
   }
 }

@@ -5,16 +5,16 @@ class LocationService {
   PermissionStatus? _permissionGranted;
 
   Future<LocationData?> getCurrentLocation() async {
+    if (!await requestLocationPermission()) {
+      return null;
+    }
+
     final serviceEnabled = await _location.serviceEnabled();
     if (!serviceEnabled) {
       final result = await _location.requestService();
       if (!result) {
         return null;
       }
-    }
-
-    if (await requestLocationPermission()) {
-      return null;
     }
 
     final locationData = await _location.getLocation();
